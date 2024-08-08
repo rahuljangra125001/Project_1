@@ -8,18 +8,21 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 <body>
     <!-- Header -->
-    <div id="header-container"></div>
-    <div id="navbar-container"></div>
+    <header class="hero" data-aos="fade-down">
+        <div class="hero-content">
+            <h1>Sheela Packers and Movers</h1>
+            <p id="quote" class="typed-text"></p>
+            <div class="btn-container">
+                <a href="#contact" class="btn btn-light">Get a Free Quote</a>
+            </div>
+        </div>
+    </header>
 
-    <!-- Main Sections -->
+    <!-- Other Sections -->
+    <div id="navbar-container"></div>
     <div id="home-container"></div>
     <div id="services-container"></div>
     <div id="resources-container"></div>
@@ -27,91 +30,68 @@
     <div id="network-container"></div>
     <div id="why-choose-us-container"></div>
     <div id="testimonials-container">
-        <div id="testimonialCarousel" class="carousel slide" data-ride="carousel">
-            <div class="carousel-inner"></div>
-        </div>
+        <div class="testimonial-scroll"></div>
     </div>
     <div id="about-container"></div>
     <div id="contact-container">
         <form id="feedbackForm">
-            <input type="text" name="name" placeholder="Your Name" required>
-            <input type="email" name="email" placeholder="Your Email" required>
-            <textarea name="comment" placeholder="Your Feedback" required></textarea>
-            <input type="number" name="rating" min="1" max="5" placeholder="Rating (1-5)" required>
+            <input type="text" name="name" id="name" placeholder="Your Name" required>
+            <input type="email" name="email" id="email" placeholder="Your Email" required>
+            <textarea name="comment" id="comment" placeholder="Your Feedback" required></textarea>
+            <input type="number" name="rating" id="rating" min="1" max="5" placeholder="Rating (1-5)" required>
             <button type="submit">Submit Feedback</button>
         </form>
     </div>
     <div id="login-container"></div>
-
-    <!-- Footer -->
     <div id="footer-container"></div>
 
     <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const fetchFeedback = async () => {
-                try {
-                    const response = await fetch('http://localhost:3000/feedback'); // Adjust URL if deployed
-                    if (!response.ok) throw new Error('Network response was not ok.');
-                    const feedbacks = await response.json();
-                    const carouselInner = document.querySelector('.carousel-inner');
-                    carouselInner.innerHTML = feedbacks.map((feedback, index) => `
-                        <div class="carousel-item ${index === 0 ? 'active' : ''}">
-                            <div class="d-flex align-items-center">
-                                <img src="https://randomuser.me/api/portraits/men/${Math.floor(Math.random() * 100)}.jpg" class="rounded-circle mr-3" alt="${feedback.name}">
-                                <div>
-                                    <blockquote class="blockquote text-center">
-                                        <p class="mb-0">"${feedback.comment}"</p>
-                                        <footer class="blockquote-footer">${feedback.name}, ${feedback.email}, ${feedback.location}</footer>
-                                        <div class="stars">
-                                            ${'&#9733;'.repeat(feedback.rating)}${'&#9734;'.repeat(5 - feedback.rating)}
-                                        </div>
-                                    </blockquote>
-                                </div>
-                            </div>
-                        </div>
-                    `).join('');
-                } catch (error) {
-                    console.error('Error fetching feedback:', error);
-                }
-            };
+        document.addEventListener("DOMContentLoaded", function() {
+            // Typing effect for hero quote
+            const text = "Your trusted partner for a seamless, stress-free relocation, where every detail is meticulously managed.";
+            const speed = 50;
 
-            const submitFeedback = async (data) => {
-                try {
-                    const response = await fetch('http://localhost:3000', { // Adjust URL if deployed
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify(data),
-                    });
-
-                    if (response.ok) {
-                        feedbackForm.reset(); // Reset the form after successful submission
-                        await fetchFeedback(); // Refresh feedback list
-                        alert('Feedback submitted successfully!');
+            function typeEffect(element, text, speed) {
+                let index = 0;
+                element.innerHTML = ''; // Clear previous text
+                
+                function type() {
+                    if (index < text.length) {
+                        element.innerHTML += text.charAt(index);
+                        index++;
+                        setTimeout(type, speed);
                     } else {
-                        alert('Error submitting feedback: ' + response.statusText);
+                        element.style.borderRight = "none"; // Remove cursor after typing is done
                     }
-                } catch (error) {
-                    console.error('Error submitting feedback:', error);
-                    alert('An unexpected error occurred. Please try again later.');
                 }
-            };
+                type();
+            }
 
-            const feedbackForm = document.getElementById('feedbackForm');
-            feedbackForm.addEventListener('submit', async (event) => {
-                event.preventDefault();
-                if (!feedbackForm.checkValidity()) {
-                    feedbackForm.reportValidity(); // Show validation errors
-                    return;
-                }
+            function restartTypingEffect() {
+                const quoteElement = document.getElementById("quote");
+                typeEffect(quoteElement, text, speed);
+            }
 
-                const formData = new FormData(feedbackForm);
-                const data = Object.fromEntries(formData.entries());
-                await submitFeedback(data);
+            // Observer for hero section to start typing effect
+            const heroObserver = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        restartTypingEffect();
+                    }
+                });
+            }, {
+                threshold: 0.5
             });
 
+            heroObserver.observe(document.querySelector('.hero'));
+
+            // Dynamic content loading
             async function loadDynamicContent() {
                 const pages = ['header', 'navbar', 'home', 'about', 'services', 'resources', 'clients', 'network', 'why-choose-us', 'testimonials', 'contact', 'login', 'footer'];
                 for (const page of pages) {
@@ -127,10 +107,9 @@
                     }
                 }
             }
-
             loadDynamicContent();
 
-            // Smooth scrolling
+            // Smooth scrolling for navigation
             document.querySelectorAll('.nav-link').forEach(anchor => {
                 anchor.addEventListener('click', function (e) {
                     e.preventDefault();
@@ -165,7 +144,7 @@
                 }
             }
 
-            // Change background images
+            // Background image rotation for hero section
             const backgrounds = [
                 'https://images.unsplash.com/flagged/photo-1594051723956-b14e836bdeb5?w=500&auto=format&fit=crop&q=60',
                 'https://images.unsplash.com/photo-1614359835514-92f8ba196357?q=80&w=1472&auto=format&fit=crop',
@@ -175,7 +154,7 @@
                 'https://plus.unsplash.com/premium_photo-1664300914931-76c0f99a96b8?w=500&auto=format&fit=crop&q=60'
             ];
             let currentIndex = 0;
-            const homeSection = document.getElementById('header-container');
+            const homeSection = document.querySelector('.hero');
 
             function changeBackground() {
                 homeSection.style.backgroundImage = `url(${backgrounds[currentIndex]})`;
@@ -185,7 +164,51 @@
             setInterval(changeBackground, 5000);
             changeBackground();
 
+            // AOS animations initialization
             AOS.init();
+
+            // Feedback form submission handling
+            document.getElementById('feedbackForm').addEventListener('submit', function(event) {
+                event.preventDefault(); // Prevent default form submission
+                
+                // Get form values
+                const name = document.getElementById('name').value;
+                const email = document.getElementById('email').value;
+                const comment = document.getElementById('comment').value;
+                const rating = document.getElementById('rating').value;
+
+                // Create a new testimonial element
+                const testimonialItem = document.createElement('div');
+                testimonialItem.classList.add('testimonial-item');
+                testimonialItem.innerHTML = `
+                    <p class="testimonial-text">"${comment}"</p>
+                    <p class="testimonial-author">- ${name}, ${rating} Star${rating > 1 ? 's' : ''}</p>
+                `;
+
+                // Append the new testimonial to the container
+                document.querySelector('.testimonial-scroll').appendChild(testimonialItem);
+
+                // Clear form fields
+                document.getElementById('feedbackForm').reset();
+            });
+
+            // Observer for testimonial animations
+            const testimonialItems = document.querySelectorAll('.testimonial-item');
+            const testimonialObserver = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('in-view');
+                    } else {
+                        entry.target.classList.remove('in-view');
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+
+            testimonialItems.forEach(item => {
+                testimonialObserver.observe(item);
+            });
         });
     </script>
 </body>

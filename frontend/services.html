@@ -3,7 +3,7 @@
         <h2 class="text-center mb-5">Our Services</h2>
         <div class="row">
             <!-- Residential Moving -->
-            <div class="col-md-4">
+            <div class="col-md-4" onclick="handleServiceClick('Residential Moving')">
                 <div class="card mb-4">
                     <img src="https://plus.unsplash.com/premium_photo-1683141107777-8309fc981326?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" class="card-img-top" alt="Residential Moving">
                     <div class="card-body">
@@ -15,7 +15,7 @@
                 </div>
             </div>
             <!-- Commercial Moving -->
-            <div class="col-md-4">
+            <div class="col-md-4" onclick="handleServiceClick('Commercial Moving')">
                 <div class="card mb-4">
                     <img src="https://images.unsplash.com/photo-1600725935160-f67ee4f6084a?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8Y29tbWVyaWNhbCUyMG1vdmluZ3xlbnwwfHwwfHx8MA%3D%3D" class="card-img-top" alt="Commercial Moving">
                     <div class="card-body">
@@ -27,7 +27,7 @@
                 </div>
             </div>
             <!-- Storage Solutions -->
-            <div class="col-md-4">
+            <div class="col-md-4" onclick="handleServiceClick('Storage Solutions')">
                 <div class="card mb-4">
                     <img src="https://images.unsplash.com/photo-1469289759076-d1484757abc3?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8U2VjdXJlJTIwc2hvcnQlMjB0ZXJtJTIwYW5kJTIwbG9uZyUyMHRlcm0lMjBzdG9yYWdlJTIwb3B0aW9uc3xlbnwwfHwwfHx8MA%3D%3D" class="card-img-top" alt="Storage Solutions">
                     <div class="card-body">
@@ -41,7 +41,7 @@
         </div>
         <div class="row">
             <!-- Packing Services -->
-            <div class="col-md-4">
+            <div class="col-md-4" onclick="handleServiceClick('Packing Services')">
                 <div class="card mb-4">
                     <img src="https://plus.unsplash.com/premium_photo-1676057875109-6899ca4ae838?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8cGFja2luZ3xlbnwwfHwwfHx8MA%3D%3D" class="card-img-top" alt="Packing Services">
                     <div class="card-body">
@@ -53,7 +53,7 @@
                 </div>
             </div>
             <!-- Unpacking Services -->
-            <div class="col-md-4">
+            <div class="col-md-4" onclick="handleServiceClick('Unpacking Services')">
                 <div class="card mb-4">
                     <img src="https://plus.unsplash.com/premium_photo-1670002259521-345ab6bb758a?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8dW5wYWNraW5nfGVufDB8fDB8fHww" class="card-img-top" alt="Unpacking Services">
                     <div class="card-body">
@@ -65,7 +65,7 @@
                 </div>
             </div>
             <!-- Specialized Moving -->
-            <div class="col-md-4">
+            <div class="col-md-4" onclick="handleServiceClick('Specialized Moving')">
                 <div class="card mb-4">
                     <img src="https://images.unsplash.com/photo-1615095432023-77f17ef6fab8?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8ZGVsaWNhdGUlMjBtb3Zpbmd8ZW58MHx8MHx8fDA%3D" class="card-img-top" alt="Specialized Moving">
                     <div class="card-body">
@@ -79,7 +79,7 @@
         </div>
         <div class="row">
             <!-- Vehicle Transporting -->
-            <div class="col-md-4">
+            <div class="col-md-4" onclick="handleServiceClick('Vehicle Transporting')">
                 <div class="card mb-4">
                     <img src="https://images.unsplash.com/photo-1534081278205-74cdb8585879?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fGNhciUyMHRyYW5zcG9ydHxlbnwwfHwwfHx8MA%3D%3D" class="card-img-top" alt="Vehicle Transporting">
                     <div class="card-body">
@@ -93,3 +93,11 @@
         </div>
     </div>
 </section>
+<script>
+    function handleServiceClick(serviceName) {
+        // Call the function from the parent page
+        if (window.parent && window.parent.handleServiceClick) {
+            window.parent.handleServiceClick(serviceName);
+        }
+    }
+</script>
