@@ -1,0 +1,65 @@
+<div class="modal fade" id="login" tabindex="-1" role="dialog" aria-labelledby="authModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="authModalLabel">Log In / Sign Up</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Google Sign-In Button -->
+                <div id="g_id_onload" data-client_id="YOUR_CLIENT_ID" data-callback="handleCredentialResponse"></div>
+                <div class="g_id_signin" data-type="standard"></div>
+
+                <hr>
+
+                <!-- Personal Sign-Up / Sign-In Tabs -->
+                <ul class="nav nav-tabs" id="authModalTabs" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="signup-tab" data-toggle="tab" href="#signup" role="tab" aria-controls="signup" aria-selected="true">Sign Up</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="signin-tab" data-toggle="tab" href="#signin" role="tab" aria-controls="signin" aria-selected="false">Sign In</a>
+                    </li>
+                </ul>
+                <div class="tab-content" id="authModalContent">
+                    <!-- Sign Up Form -->
+                    <div class="tab-pane fade show active" id="signup" role="tabpanel" aria-labelledby="signup-tab">
+                        <h3>Sign Up</h3>
+                        <form id="signup-form">
+                            <div class="form-group">
+                                <label for="signup-username">Username</label>
+                                <input type="text" class="form-control" id="signup-username" name="username" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="signup-email">Email</label>
+                                <input type="email" class="form-control" id="signup-email" name="email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="signup-password">Password</label>
+                                <input type="password" class="form-control" id="signup-password" name="password" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Sign Up</button>
+                        </form>
+                    </div>
+                    <!-- Sign In Form -->
+                    <div class="tab-pane fade" id="signin" role="tabpanel" aria-labelledby="signin-tab">
+                        <h3>Sign In</h3>
+                        <form id="signin-form">
+                            <div class="form-group">
+                                <label for="signin-email">Email</label>
+                                <input type="email" class="form-control" id="signin-email" name="email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="signin-password">Password</label>
+                                <input type="password" class="form-control" id="signin-password" name="password" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Sign In</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

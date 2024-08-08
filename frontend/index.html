@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sheela Packers and Movers</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+<body>
+    <!-- Header -->
+    <div id="header-container"></div>
+    <div id="navbar-container"></div>
+
+    <!-- Main Sections -->
+    <div id="home-container"></div>
+    <div id="services-container"></div>
+    <div id="resources-container"></div>
+    <div id="clients-container"></div>
+    <div id="network-container"></div>
+    <div id="why-choose-us-container"></div>
+    <div id="testimonials-container">
+        <div id="testimonialCarousel" class="carousel slide" data-ride="carousel">
+            <div class="carousel-inner"></div>
+        </div>
+    </div>
+    <div id="about-container"></div>
+    <div id="contact-container">
+        <form id="feedbackForm">
+            <input type="text" name="name" placeholder="Your Name" required>
+            <input type="email" name="email" placeholder="Your Email" required>
+            <textarea name="comment" placeholder="Your Feedback" required></textarea>
+            <input type="number" name="rating" min="1" max="5" placeholder="Rating (1-5)" required>
+            <button type="submit">Submit Feedback</button>
+        </form>
+    </div>
+    <div id="login-container"></div>
+
+    <!-- Footer -->
+    <div id="footer-container"></div>
+
+    <!-- Scripts -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const fetchFeedback = async () => {
+                try {
+                    const response = await fetch('http://localhost:3000/feedback'); // Adjust URL if deployed
+                    if (!response.ok) throw new Error('Network response was not ok.');
+                    const feedbacks = await response.json();
+                    const carouselInner = document.querySelector('.carousel-inner');
+                    carouselInner.innerHTML = feedbacks.map((feedback, index) => `
+                        <div class="carousel-item ${index === 0 ? 'active' : ''}">
+                            <div class="d-flex align-items-center">
+                                <img src="https://randomuser.me/api/portraits/men/${Math.floor(Math.random() * 100)}.jpg" class="rounded-circle mr-3" alt="${feedback.name}">
+                                <div>
+                                    <blockquote class="blockquote text-center">
+                                        <p class="mb-0">"${feedback.comment}"</p>
+                                        <footer class="blockquote-footer">${feedback.name}, ${feedback.email}, ${feedback.location}</footer>
+                                        <div class="stars">
+                                            ${'&#9733;'.repeat(feedback.rating)}${'&#9734;'.repeat(5 - feedback.rating)}
+                                        </div>
+                                    </blockquote>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('');
+                } catch (error) {
+                    console.error('Error fetching feedback:', error);
+                }
+            };
+
+            const submitFeedback = async (data) => {
+                try {
+                    const response = await fetch('http://localhost:3000', { // Adjust URL if deployed
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(data),
+                    });
+
+                    if (response.ok) {
+                        feedbackForm.reset(); // Reset the form after successful submission
+                        await fetchFeedback(); // Refresh feedback list
+                        alert('Feedback submitted successfully!');
+                    } else {
+                        alert('Error submitting feedback: ' + response.statusText);
+                    }
+                } catch (error) {
+                    console.error('Error submitting feedback:', error);
+                    alert('An unexpected error occurred. Please try again later.');
+                }
+            };
+
+            const feedbackForm = document.getElementById('feedbackForm');
+            feedbackForm.addEventListener('submit', async (event) => {
+                event.preventDefault();
+                if (!feedbackForm.checkValidity()) {
+                    feedbackForm.reportValidity(); // Show validation errors
+                    return;
+                }
+
+                const formData = new FormData(feedbackForm);
+                const data = Object.fromEntries(formData.entries());
+                await submitFeedback(data);
+            });
+
+            async function loadDynamicContent() {
+                const pages = ['header', 'navbar', 'home', 'about', 'services', 'resources', 'clients', 'network', 'why-choose-us', 'testimonials', 'contact', 'login', 'footer'];
+                for (const page of pages) {
+                    try {
+                        const response = await fetch(`${page}.html`);
+                        if (response.ok) {
+                            document.getElementById(`${page}-container`).innerHTML = await response.text();
+                        } else {
+                            console.error(`Failed to load ${page}.html`);
+                        }
+                    } catch (error) {
+                        console.error(`Error loading ${page}.html:`, error);
+                    }
+                }
+            }
+
+            loadDynamicContent();
+
+            // Smooth scrolling
+            document.querySelectorAll('.nav-link').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href').substring(1);
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        const navbarHeight = document.querySelector('.navbar').offsetHeight;
+                        targetElement.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                        window.setTimeout(() => {
+                            window.scrollBy(0, -navbarHeight);
+                        }, 500);
+                    }
+                });
+            });
+
+            // Handle URL hash on page load
+            if (window.location.hash) {
+                const targetId = window.location.hash.substring(1);
+                const targetElement = document.getElementById(targetId);
+                if (targetElement) {
+                    const navbarHeight = document.querySelector('.navbar').offsetHeight;
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                    window.setTimeout(() => {
+                        window.scrollBy(0, -navbarHeight);
+                    }, 500);
+                }
+            }
+
+            // Change background images
+            const backgrounds = [
+                'https://images.unsplash.com/flagged/photo-1594051723956-b14e836bdeb5?w=500&auto=format&fit=crop&q=60',
+                'https://images.unsplash.com/photo-1614359835514-92f8ba196357?q=80&w=1472&auto=format&fit=crop',
+                'https://plus.unsplash.com/premium_photo-1680300960757-376ffe4a18ce?w=500&auto=format&fit=crop&q=60',
+                'https://images.unsplash.com/flagged/photo-1594051723870-48f4782c3971?w=500&auto=format&fit=crop&q=60',
+                'https://images.unsplash.com/photo-1666852976132-4a70734e9407?w=500&auto=format&fit=crop&q=60',
+                'https://plus.unsplash.com/premium_photo-1664300914931-76c0f99a96b8?w=500&auto=format&fit=crop&q=60'
+            ];
+            let currentIndex = 0;
+            const homeSection = document.getElementById('header-container');
+
+            function changeBackground() {
+                homeSection.style.backgroundImage = `url(${backgrounds[currentIndex]})`;
+                currentIndex = (currentIndex + 1) % backgrounds.length;
+            }
+
+            setInterval(changeBackground, 5000);
+            changeBackground();
+
+            AOS.init();
+        });
+    </script>
+</body>
+</html>
